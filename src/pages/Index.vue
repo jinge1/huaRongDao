@@ -1,7 +1,7 @@
 <template>
 <div class="game">
   <ul class="roles-list" id="roles" :class="{trans: isTrans}" :style="{height: `${totalHeight}px`}">
-    <li v-for="(item, index) in renderList" :class="[`roles-${item.role}`]" :data-index="index" :style="{ width: `${item.width}px`, height: `${item.height}px`, left: `${item.left}px`, top: `${item.top}px`}">
+    <li v-for="(item, index) in renderList" :key="index" :class="[`roles-${item.role}`]" :data-index="index" :style="{ width: `${item.width}px`, height: `${item.height}px`, left: `${item.left}px`, top: `${item.top}px`}">
       {{item.name}}
     </li>
   </ul>
@@ -111,13 +111,11 @@ export default {
           y: 4
         }
       ],
-      renderList: [],
-      spaceScale: 0.02,
-      totalHeight: 0,
-      swipe: null,
-      huarongdao: null,
-      isTrans: false,
-      indexRole: -1
+      renderList: [], // 渲染列表
+      spaceScale: 0.02, // 间隙角色间比例
+      totalHeight: 0, // 总高度
+      huarongdao: null, // Huarongdao实例
+      isTrans: false // 滑动停止时启用css3动画
     }
   },
   mounted() {
@@ -127,6 +125,7 @@ export default {
       spaceScale
     } = this
     this.$nextTick(() => {
+      // Huarongdao实例
       let ele = document.querySelector('#roles')
       let huarongdao = new Huarongdao({
         ele,
@@ -137,8 +136,25 @@ export default {
         vSize: 5,
         spaceScale
       })
+      // 事件注册
       huarongdao.startEvent = (e)=>{
         this.isTrans = false
+      }
+      huarongdao.moveEvent = (e)=>{
+        let {
+          moveIndex,
+          singleWidth,
+          spaceWidth,
+        } = huarongdao
+        if(moveIndex !== -1){
+          let {left, top, role} = renderList[moveIndex]
+          let x = Math.round(left / (singleWidth + spaceWidth))
+          let y = Math.round(top / (singleWidth + spaceWidth))
+          if(role === 4 && x === 1 && y === 3){
+            alert('you win!')
+          }
+        }
+        
       }
       huarongdao.update = ()=>{
         this.setLayout()
@@ -146,7 +162,6 @@ export default {
       huarongdao.beforeEnd = ()=>{
         this.isTrans = true
       }
-
       huarongdao.endEvent = ()=>{
         this.setLayout()
       }

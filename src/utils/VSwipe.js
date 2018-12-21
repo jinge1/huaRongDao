@@ -5,7 +5,7 @@
 export default class VSwipe {
   /**
    * [constructor 初始化]
-   * @param {[type]} element       [事件元素或者querySelector字符串]
+   * @param {object|string} element       [事件元素或者querySelector字符串]
    * @param {Number} [disTime=100] [每隔disTime事件间隔统计一次最后的运动数据]
    * @param {Number} [minNum=7]    [最小运动临界值值，小于这个值则认为未运动]
    */
@@ -239,7 +239,7 @@ export default class VSwipe {
   }
 
   // dragDirection  需要拖拽元素的方向（x,y,all,'')
-  getPosition(dragDirection = 'y') {
+  getPosition() {
     let {position} = this
     let {left, top} = position
     let {direction, differNum} = this.moveInfo

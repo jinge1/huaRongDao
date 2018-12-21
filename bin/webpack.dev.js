@@ -2,7 +2,6 @@ const path = require('path')
 const getIp = require('os-ip')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
 function resolve(name) {
@@ -45,12 +44,7 @@ module.exports = {
       filename: 'index.html',
       template: 'src/index.html'
     }),
-    new VueLoaderPlugin(),
-    new CopyWebpackPlugin([{
-      from: resolve('dll'),
-      to: resolve('dist/dll'),
-      toType: 'dir'
-    }])
+    new VueLoaderPlugin()
   ],
   devtool: 'inline-source-map',
   devServer: {

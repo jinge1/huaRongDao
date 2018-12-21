@@ -61,9 +61,7 @@ export default class Huarongdao {
     let renderList = []
     layout.forEach(item => {
       let renderInfo = this.getRenderDetail(item)
-      renderList.push({
-        ...renderInfo
-      })
+      renderList.push({...renderInfo})
     })
     return renderList
   }
